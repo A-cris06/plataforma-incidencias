@@ -10,6 +10,7 @@ public class IncidenciaFiltroDTO {
     private Prioridad prioridad;
     private int page = 0;
     private int size = 20;
+    private String sort;
 
     public Long getUsuarioId() { return usuarioId; }
     public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
@@ -25,4 +26,7 @@ public class IncidenciaFiltroDTO {
 
     public int getSize() { return size; }
     public void setSize(int size) { this.size = size; }
+
+    public String getSort() { return sort; }
+    public void setSort(String sort) { this.sort = sort; }
 }

@@ -1,0 +1,64 @@
+package com.empresa.incidencias.service;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.empresa.incidencias.domain.entity.Incidencia;
+import com.empresa.incidencias.domain.entity.SugerenciaIA;
+import com.empresa.incidencias.infrastructure.CopilotClient;
+import com.empresa.incidencias.service.impl.SugerenciaIAServiceImpl;
+import com.empresa.incidencias.repository.SugerenciaIARepository;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+class SugerenciaIAServiceImplTest {
+
+    @Mock
+    private SugerenciaIARepository sugerenciaIARepository;
+
+    @Mock
+    private CopilotClient copilotClient;
+
+    @InjectMocks
+    private SugerenciaIAServiceImpl sugerenciaIAService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void testGenerarSugerenciaConIncidencia() throws Exception {
+        // Creamos la incidencia
+        Incidencia incidencia = new Incidencia();
+        incidencia.setId(Long.valueOf(1));
+        incidencia.setTitulo("Test incidencia");
+        incidencia.setDescripcion("Descripción de prueba");
+        incidencia.setEstado(null);       // opcional según tu implementación
+        incidencia.setPrioridad(null);    // opcional según tu implementación
+
+        // Mock de CopilotClient: devuelve texto simulado
+        when(copilotClient.ejecutarPrompt(anyString()))
+                .thenReturn("Paso 1, Paso 2");
+
+        // Mock del repositorio: devuelve una sugerencia con ID simulado
+        SugerenciaIA sugerenciaGuardada = new SugerenciaIA();
+        sugerenciaGuardada.setId(Long.valueOf(100));
+        when(sugerenciaIARepository.save(any(SugerenciaIA.class)))
+                .thenReturn(sugerenciaGuardada);
+
+        // Llamada al servicio
+        SugerenciaIA result = sugerenciaIAService.generarSugerencia(incidencia);
+
+        // Verificaciones
+        assertNotNull(result);
+        assertEquals(Long.valueOf(100), result.getId());
+        verify(sugerenciaIARepository).save(any(SugerenciaIA.class));
+        verify(copilotClient).ejecutarPrompt(anyString());
+    }
+}

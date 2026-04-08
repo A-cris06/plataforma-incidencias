@@ -16,4 +16,14 @@ public class UsuarioResumenDTO {
     public Long getId() { return id; }
     public String getNombre() { return nombre; }
     public String getEmail() { return email; }
+
+    // Method toString
+    @Override
+    public String toString() {
+        return "UsuarioResumenDTO{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
