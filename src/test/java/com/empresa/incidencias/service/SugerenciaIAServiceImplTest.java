@@ -4,8 +4,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.empresa.incidencias.domain.entity.EstadoIncidencia;
 import com.empresa.incidencias.domain.entity.Incidencia;
+import com.empresa.incidencias.domain.entity.Prioridad;
 import com.empresa.incidencias.domain.entity.SugerenciaIA;
+import java.time.LocalDateTime;
 import com.empresa.incidencias.infrastructure.CopilotClient;
 import com.empresa.incidencias.service.impl.SugerenciaIAServiceImpl;
 import com.empresa.incidencias.repository.SugerenciaIARepository;
@@ -39,8 +42,9 @@ class SugerenciaIAServiceImplTest {
         incidencia.setId(Long.valueOf(1));
         incidencia.setTitulo("Test incidencia");
         incidencia.setDescripcion("Descripción de prueba");
-        incidencia.setEstado(null);       // opcional según tu implementación
-        incidencia.setPrioridad(null);    // opcional según tu implementación
+        incidencia.setEstado(EstadoIncidencia.ABIERTA);
+        incidencia.setPrioridad(Prioridad.ALTA);
+        incidencia.setFechaCreacion(LocalDateTime.of(2026, 4, 9, 10, 0));
 
         // Mock de CopilotClient: devuelve texto simulado
         when(copilotClient.ejecutarPrompt(anyString()))
